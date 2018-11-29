@@ -1,115 +1,85 @@
 package Ex4;
-/* Java program to solve N Queen Problem using 
-backtracking */
 public class nQueens{ 
 	final int N = 4; 
-
-	/* A utility function to print solution */
-	void printSolution(int board[][]) 
-	{ 
-		for (int i = 0; i < N; i++) 
-		{ 
+	public void imprimeMatrix(int matrix[][]) { 
+		for (int i = 0; i < N; i++) { 
 			for (int j = 0; j < N; j++) 
-				System.out.print(" " + board[i][j] 
+				System.out.print(" " + matrix[i][j] 
 								+ " "); 
 			System.out.println(); 
 		} 
 	} 
 
-	/* A utility function to check if a queen can 
-	be placed on board[row][col]. Note that this 
-	function is called when "col" queens are already 
-	placeed in columns from 0 to col -1. So we need 
-	to check only left side for attacking queens */
-	boolean isSafe(int board[][], int row, int col) 
-	{ 
+	//método para verificar se é seguro colocar uma rainha 
+	//em tal lugar
+	public boolean isSafe(int matrix[][], int row, int col) { 
 		int i, j; 
 
-		/* Check this row on left side */
+		//verificar linha do lado esquerdo
 		for (i = 0; i < col; i++) 
-			if (board[row][i] == 1) 
+			if (matrix[row][i] == 1) 
 				return false; 
 
-		/* Check upper diagonal on left side */
+		//verificar diagonal de cima, lado esquerdo
 		for (i=row, j=col; i>=0 && j>=0; i--, j--) 
-			if (board[i][j] == 1) 
+			if (matrix[i][j] == 1) 
 				return false; 
 
-		/* Check lower diagonal on left side */
+		//verificar diagonal debaixo, lado esquerdo
 		for (i=row, j=col; j>=0 && i<N; i++, j--) 
-			if (board[i][j] == 1) 
+			if (matrix[i][j] == 1) 
 				return false; 
 
 		return true; 
 	} 
-
-	/* A recursive utility function to solve N 
-	Queen problem */
-	boolean solveNQUtil(int board[][], int col) 
-	{ 
-		/* base case: If all queens are placed 
-		then return true */
+	public boolean solveNQUtil(int matrix[][], int col) { 
+		//caso base: as rainhas ja estao alocadas corretamente
 		if (col >= N) 
 			return true; 
 
-		/* Consider this column and try placing 
-		this queen in all rows one by one */
-		for (int i = 0; i < N; i++) 
-		{ 
-			/* Check if the queen can be placed on 
-			board[i][col] */
-			if (isSafe(board, i, col)) 
-			{ 
-				/* Place this queen in board[i][col] */
-				board[i][col] = 1; 
+		/* Considera a coluna e tenta encaixar a rainha 
+		 * em todas as linhas uma por uma
+		 */
+		for (int i = 0; i < N; i++) { 
+			//verifica se é seguro colocar a rainha ali
+			if (isSafe(matrix, i, col)) { 
+				matrix[i][col] = 1; //se for, coloca 1
 
-				/* recur to place rest of the queens */
-				if (solveNQUtil(board, col + 1) == true) 
+				//chamada recursiva
+				if (solveNQUtil(matrix, col + 1) == true) 
 					return true; 
 
-				/* If placing queen in board[i][col] 
-				doesn't lead to a solution then 
-				remove queen from board[i][col] */
-				board[i][col] = 0; // BACKTRACK 
+				//Parte do backtracking: Se colocar uma rainha 
+				//em uma posicao que nao leva para a solucao correta
+				//a rainha é removida, e volta ao estado de antes
+				matrix[i][col] = 0; // BACKTRACK 
 			} 
 		} 
 
-		/* If the queen can not be placed in any row in 
-		this colum col, then return false */
+		//se nao puder colocar em nenhum lugar
 		return false; 
 	} 
 
-	/* This function solves the N Queen problem using 
-	Backtracking. It mainly uses solveNQUtil () to 
-	solve the problem. It returns false if queens 
-	cannot be placed, otherwise, return true and 
-	prints placement of queens in the form of 1s. 
-	Please note that there may be more than one 
-	solutions, this function prints one of the 
-	feasible solutions.*/
-	boolean solveNQ() 
-	{ 
-		int board[][] = {{0, 0, 0, 0}, 
+	public boolean solveNQ() { 
+	//cria matriz
+		int matrix[][] = {{0, 0, 0, 0}, 
 			{0, 0, 0, 0}, 
 			{0, 0, 0, 0}, 
-			{0, 0, 0, 0} 
-		}; 
-
-		if (solveNQUtil(board, 0) == false) 
-		{ 
-			System.out.print("Solution does not exist"); 
+			{0, 0, 0, 0} }; 
+//tenta resolver o problema retornando true ou false
+		if (solveNQUtil(matrix, 0) == false) { 
+			System.out.print("Não existe solução"); 
 			return false; 
 		} 
 
-		printSolution(board); 
+		imprimeMatrix(matrix); 
 		return true; 
 	} 
-
-	// driver program to test above function 
-	public static void main(String args[]) 
-	{ 
+ 
+	public static void main(String args[]) { 
 		nQueens Queen = new nQueens(); 
 		Queen.solveNQ(); 
 	} 
 } 
-// This code is contributed by Abhishek Shankhadhar 
+//este codigo foi baseado na solução que o site geeksforgeeks explica
+//https://www.geeksforgeeks.org/n-queen-problem-backtracking-3/ 
