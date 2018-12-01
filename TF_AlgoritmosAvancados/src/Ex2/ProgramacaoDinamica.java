@@ -1,5 +1,11 @@
 package Ex2;
 
+/**
+ * Trabalho Final da disciplina de Algoritmos Avançados
+ * PUCRS - 2018/2 
+ * @authors Bruna Prauchner, Israel Deorce e Mayara Oliveira.
+ *
+ */
 public class ProgramacaoDinamica {
 
 	static int count = 0;
